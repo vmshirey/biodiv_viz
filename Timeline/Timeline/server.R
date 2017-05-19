@@ -31,6 +31,7 @@ shinyServer(function(input, output) {
                                                                                                                                      fontSize: 32, color: '#4682B4', bold: true},
                                                                                                                                      cellSize: 10, cellColor: { stroke: 'grey', strokeOpacity: 0.2 },
                                                                                                                                      focusedCellColor: {stroke: 'red'}}"))
+
     
   })
   
