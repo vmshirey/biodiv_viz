@@ -1,0 +1,20 @@
+Machine learning cannot be loosely defined
+	Describe -> Explain -> Predict - hidden state
+	Geo side of the tree structure needs to be defined, but likely structured similar to biology
+		There is an interface ontology that hasn't been defined yet (this is our opportunity)
+			How are these functions affordances for life process. 
+				Process based facets for each interaction
+Draft combo venn + hive diagram with geo/bio/time - use as a legend
+
+
+Example:
+
+Crane Fly:
+	Larvae
+	Pupae
+	Adult
+		Reproduction
+		Bio: Wing to Mass ration
+		Geo: Substrate, Water Availablility & Stream Type (riffle/pool/bank)
+		Time: Seasonality
+
