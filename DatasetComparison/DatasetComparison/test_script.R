@@ -7,15 +7,17 @@
 ## field within and across datasets.     ##
 ###########################################
 
+require(maps) ## require maps package
+require(mapdata) ## require map data package
 require(igraph) ## require igraph package
 require(data.table) ## require data.table package
 
 ## load data about carolina anoles from 
 ## FMNH and UMMZ.
 
-fmnh <- read.csv("occurrence_raw_FMNH.csv", header=TRUE,
+fmnh <- read.csv("occurrence_FMNH.csv", header=TRUE,
                  sep=",")
-ummz <- read.csv("occurrence_raw_UMMZ.csv", header=TRUE,
+ummz <- read.csv("occurrence_UMMZ.csv", header=TRUE,
                  sep=",")
 
 ## create dataframe to show variables with
@@ -35,11 +37,24 @@ na_ummz <- setDT(na_ummz, keep.rownames = TRUE)[]
 na_fmnh <- cbind(a = "occurrence", na_fmnh)
 na_ummz <- cbind(a = "occurrence", na_ummz)
 
+colnames(na_fmnh)[3] <- "present"
+colnames(na_ummz)[3] <- "present"
+
+false_fmnh <- na_fmnh[ which(na_fmnh$present=="FALSE"),]
+false_ummz <- na_ummz[ which(na_ummz$present=="FALSE"),]
+
 ## plot igraph network for connections, should be radial
 
-par(mfrow(c(1,1)))
-fmnh_net <- graph_from_data_frame(d=na_fmnh)
-plot(fmnh_net)
+par(mfrow=c(1,1))
+fmnh_net <- graph_from_data_frame(d=false_fmnh)
+plot(fmnh_net, edge.arrow.size=0, vertex.size=15, vertex.frame.color="gray",
+     vertex.label.color="black", vertex.label.cex=0.8,
+      edge.curved=0.2)
+
+ummz_net <- graph_from_data_frame(d=false_ummz)
+plot(ummz_net, edge.arrow.size=0, vertex.size=15, vertex.frame.color="gray",
+     vertex.label.color="black", vertex.label.cex=0.8,
+     edge.curved=0.2)
 
 ## create dataframe with year and gps for
 ## temporal and geographic comparisons.
@@ -62,4 +77,11 @@ hist(geo_ummz$dwc.year, main="UMMZ Carolina Anole Annual Collection Frequency", 
 par(mfrow(c(2,1)))
 hist(geo_fmnh$dwc.month, main="FMNH Carolina Anole Seasonality", xlab="Month", xlim=c(0,12))
 hist(geo_ummz$dwc.month, main="UMMZ Carolina Anole Seasonality", xlab="Month", xlim=c(0,12))
+
+## side by side geographic point distribution
+
+par(mfrow(c(1,1)))
+fmnh_dist <- map("worldHires", "USA", xlim=c(-110, -65), ylim=c(25,50),
+    col="gray90", fill=TRUE)
+fmnh_dist <- points(geo_fmnh$dwc.decimalLongitude, geo_fmnh$dwc.decimalLatitude, pch=19, col="red", cex=1)
 
