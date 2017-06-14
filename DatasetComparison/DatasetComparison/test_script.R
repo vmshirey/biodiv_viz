@@ -8,6 +8,7 @@
 ###########################################
 
 require(igraph) ## require igraph package
+require(data.table) ## require data.table package
 
 ## load data about carolina anoles from 
 ## FMNH and UMMZ.
@@ -25,6 +26,20 @@ na_ummz <- sapply(ummz, function(x)all(is.na(x)))
 
 na_fmnh <- as.data.frame(na_fmnh)
 na_ummz <- as.data.frame(na_ummz)
+
+na_fmnh <- setDT(na_fmnh, keep.rownames = TRUE)[]
+na_ummz <- setDT(na_ummz, keep.rownames = TRUE)[]
+
+## add new column to na dataframe for connections
+
+na_fmnh <- cbind(a = "occurrence", na_fmnh)
+na_ummz <- cbind(a = "occurrence", na_ummz)
+
+## plot igraph network for connections, should be radial
+
+par(mfrow(c(1,1)))
+fmnh_net <- graph_from_data_frame(d=na_fmnh)
+plot(fmnh_net)
 
 ## create dataframe with year and gps for
 ## temporal and geographic comparisons.
@@ -47,5 +62,4 @@ hist(geo_ummz$dwc.year, main="UMMZ Carolina Anole Annual Collection Frequency", 
 par(mfrow(c(2,1)))
 hist(geo_fmnh$dwc.month, main="FMNH Carolina Anole Seasonality", xlab="Month", xlim=c(0,12))
 hist(geo_ummz$dwc.month, main="UMMZ Carolina Anole Seasonality", xlab="Month", xlim=c(0,12))
-
 
